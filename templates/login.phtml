@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Slim 3</title>
+        <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+        <style>
+            body {
+                margin: 50px 0 0 0;
+                padding: 0;
+                width: 100%;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                text-align: center;
+                color: #aaa;
+                font-size: 18px;
+            }
+
+            h1 {
+                color: #719e40;
+                letter-spacing: -3px;
+                font-family: 'Lato', sans-serif;
+                font-size: 100px;
+                font-weight: 200;
+                margin-bottom: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="text-center" style="padding:50px 0">
+            <div class="logo">Connexion</div>
+            <p><?= $msg; ?></p>
+            <div class="login-form-1">
+                <form id="login-form" class="text-left" action="register" method="POST" >
+                    <div class="login-form-main-message"></div>
+                    <div class="main-login-form">
+                        <div class="login-group">
+                            <div class="form-group">
+
+                                <label for="login" class="sr-only">Nom d'utilisateur</label>
+                                <input type="text" class="form-control" id="login" name="login" placeholder="nom d'utilisateur">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="sr-only">Mot de passe</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="mot de passe">
+                            </div>
+                        </div>
+                        <input type="submit" name="connexion" value="Connexion" class="button">
+                    </div>
+                    <div class="etc-login-form">
+                        <p>Mot de passe oublié ? <a href="new_pwd.php">Cliquez ici !</a></p>
+                        <p>Nouvel utilisateur ? <a href="register">S'enregistrer</a></p>
+                    </div>
+                </form>
+            </div>
+            <!-- end:Main Form -->
+        </div>
+
+    </body>
+</html>
+
+
