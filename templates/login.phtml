@@ -28,7 +28,8 @@
     <body>
         <div class="text-center" style="padding:50px 0">
             <div class="logo">Connexion</div>
-            <p><?= $msg; ?></p>
+            <p> <?php if (!empty($message)) { echo $message;} ?> </p>
+            <p> <?php if (!empty($hello)) { echo $hello;} ?> </p>
             <div class="login-form-1">
                 <form id="login-form" class="text-left" action="register" method="POST" >
                     <div class="login-form-main-message"></div>
@@ -55,8 +56,5 @@
             </div>
             <!-- end:Main Form -->
         </div>
-
     </body>
 </html>
-
-
