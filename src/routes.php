@@ -9,8 +9,11 @@ function initDb() {
     }
 }
 
-////////////////////   Index   /////////////////////////////////////////////////
 $dbh = initDb();
+
+
+////////////////////   Index   /////////////////////////////////////////////////
+
 $app->get('/', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Slim-Skeleton '/' route");
@@ -47,9 +50,9 @@ $app->post('/doRegister', function ($request, $response, $args) {
 
     if ($doRegister) {
         $_SESSION['hello'] = 'hello tout va bien';
-        $result=  $response->withRedirect('login');
+        $result = $response->withRedirect('login');
     } else {
-        $result =  $response->withRedirect('register');
+        $result = $response->withRedirect('register');
     }
 
     return $result;
@@ -69,7 +72,29 @@ $app->get('/login', function ($request, $response, $args) {
 });
 
 $app->post('/doLogin', function ($request, $response, $args) {
-    // Render index view
+
+    $profil = [
+        ':login' => $request->getParam('login'),
+        ':password' => $request->getParam('password'),
+    ];
+
+
+
+    if (verifAccount($)== 0) {
+        $msg = 'Ce login n\'existe pas, merci de procéder à votre inscription';
+    } else {
+        $sql = "select * FROM `Utilisateur` WHERE `login_util` = :login and `mdp_util` = :mdp";
+        $req = $dbh->prepare($sql);
+        $req->execute($tab);
+        $sInfo = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($sInfo) {
+            $listuser = $req->fetchAll(PDO::FETCH_OBJ);
+        } else {
+            $msg = 'Mot de passe incorrect';
+        }
+    }
+    }
     return $this->renderer->render($response, 'login.phtml', $args);
 });
 
@@ -85,7 +110,7 @@ $app->post('/doNew_mdp', function ($request, $response, $args) {
     return $this->renderer->render($response, 'new_mdp.phtml', $args);
 });
 
-////////////////////////////////////////////////////////////////////////////////
+/////////////////   Validation email   /////////////////////////////////////////
 function validEmail($email) {
     // test de l'adresse e-mail
     $result = false;
@@ -172,4 +197,19 @@ function isUserExist($email) {
     } else {
         return true;
     }
+}
+
+function verifAccount($login) {
+
+    $dbh = initDb();
+
+    $sql = 'select count(*) as count from `Utilisateur` WHERE `login_util`= :login';
+    try {
+        $res = $dbh->prepare($sql);
+        $res->execute([':login' => $login]);
+        $res = $r->fetch();
+    } catch (PDOException $e) {
+        $_SESSION['error'] = 'Il y une erreur dans verifAccount ';
+    }
+    return $res['count'];
 }
