@@ -214,11 +214,29 @@ function verifAccount($login) {
     return $res['count'];
 }
 
-function getProfileByUser
-getPieceByMaisonid
-getCapteurBypiueceid
-gettempdatby capteur
-getlumindatabycaptorid
-getMegaRequeteByUser
 
-+ routes avec var_dump
+function getProfileByUser() {
+
+}
+
+function getPieceByMaisonid() {
+
+}
+
+function getCapteurBypiueceid() {
+
+}
+
+function gettempdatbycapteur() {
+
+}
+
+function getlumindatabycaptorid() {
+
+}
+
+function getMegaRequeteByUser() {
+
+}
+
+//+ routes avec var_dump = requetes
