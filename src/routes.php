@@ -80,7 +80,7 @@ $app->post('/doLogin', function ($request, $response, $args) {
 
 
 
-    if (verifAccount($)== 0) {
+    /*if (verifAccount()== 0) {
         $msg = 'Ce login n\'existe pas, merci de procéder à votre inscription';
     } else {
         $sql = "select * FROM `Utilisateur` WHERE `login_util` = :login and `mdp_util` = :mdp";
@@ -93,9 +93,9 @@ $app->post('/doLogin', function ($request, $response, $args) {
         } else {
             $msg = 'Mot de passe incorrect';
         }
-    }
-    }
-    return $this->renderer->render($response, 'login.phtml', $args);
+    }*/
+    //}
+    return $this->renderer->render($response, 'dashboard.phtml', $args);
 });
 
 //////////////////   Changement MDP   //////////////////////////////////////////
@@ -213,3 +213,12 @@ function verifAccount($login) {
     }
     return $res['count'];
 }
+
+function getProfileByUser
+getPieceByMaisonid
+getCapteurBypiueceid
+gettempdatby capteur
+getlumindatabycaptorid
+getMegaRequeteByUser
+
++ routes avec var_dump
