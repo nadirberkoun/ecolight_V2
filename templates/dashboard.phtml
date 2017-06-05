@@ -1,6 +1,4 @@
-<?php
-
-?>
+<?php ?>
 <!doctype html>
 <html><head>
         <meta charset="utf-8">
@@ -70,6 +68,9 @@
         </div>
         <div class="container">
 
+
+            <a href="new_mdp.phtml">Changer mot de passe</a>
+
             <!-- FIRST ROW OF BLOCKS -->
             <div class="row">
 
@@ -78,20 +79,20 @@
                     <a href="#" data-toggle="modal" data-target="#modChart" data-source="65.1,59.47,80.00,81.11,56.67,55.45,40.88,20.45,40.98,80.66,88.34,61.01" data-target-source="50">bonjour</a>
                 </div>
                 <div  id="modChart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                        </button>
-                        <h4 class="modal-title" id="exampleModalLabel">Linechart</h4>
-                    </div>
-                    <div class="modal-body">
-                        <canvas id="canvas" width="568" height="300"></canvas>
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                </button>
+                                <h4 class="modal-title" id="exampleModalLabel">Linechart</h4>
+                            </div>
+                            <div class="modal-body">
+                                <canvas id="canvas" width="568" height="300"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
             </div><!-- /row -->
 
 
@@ -140,7 +141,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1/Chart.min.js"></script>
 
-<script type="text/javascript">
+        <script type="text/javascript">
             $(document).ready(function () {
 
                 $("#btn-blog-next").click(function () {
@@ -156,58 +157,60 @@
                 $("#btn-client-prev").click(function () {
                     $('#clientCarousel').carousel('prev')
                 });
- $('#modChart').on('shown.bs.modal',function(event){
-    var link = $(event.relatedTarget);
-    // get data source
-    var source = link.attr('data-source').split(',');
-    // get title
-    var title = link.html();
-    // get labels
-    var table = link.parents('table');
-    var labels = [];
-    $('#'+table.attr('id')+'>thead>tr>th').each(function(index,value){
-        // without first column
-        if(index>0){labels.push($(value).html());}
-    });
-    // get target source
-    var target = [];
-    $.each(labels, function(index,value){
-        target.push(link.attr('data-target-source'));
-    });
-    // Chart initialisieren
-    var modal = $(this);
-    var canvas = modal.find('.modal-body canvas');
-    modal.find('.modal-title').html(title);
-    var ctx = canvas[0].getContext("2d");
-    var chart = new Chart(ctx).Line({
-        responsive: true,
-        labels: labels,
-        datasets: [{
-            fillColor: "rgba(151,187,205,0.2)",
-            strokeColor: "rgba(151,187,205,1)",
-            pointColor: "rgba(151,187,205,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(151,187,205,1)",
-            data: source
-        },{
-            fillColor: "rgba(220,220,220,0.2)",
-            strokeColor: "#F7464A",
-            pointColor: "#FF5A5E",
-            pointStrokeColor: "#FF5A5E",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "red",
-            data: target
-        }]
-    },{});
-}).on('hidden.bs.modal',function(event){
-    // reset canvas size
-    var modal = $(this);
-    var canvas = modal.find('.modal-body canvas');
-    canvas.attr('width','568px').attr('height','300px');
-    // destroy modal
-    $(this).data('bs.modal', null);
-});
+                $('#modChart').on('shown.bs.modal', function (event) {
+                    var link = $(event.relatedTarget);
+                    // get data source
+                    var source = link.attr('data-source').split(',');
+                    // get title
+                    var title = link.html();
+                    // get labels
+                    var table = link.parents('table');
+                    var labels = [];
+                    $('#' + table.attr('id') + '>thead>tr>th').each(function (index, value) {
+                        // without first column
+                        if (index > 0) {
+                            labels.push($(value).html());
+                        }
+                    });
+                    // get target source
+                    var target = [];
+                    $.each(labels, function (index, value) {
+                        target.push(link.attr('data-target-source'));
+                    });
+                    // Chart initialisieren
+                    var modal = $(this);
+                    var canvas = modal.find('.modal-body canvas');
+                    modal.find('.modal-title').html(title);
+                    var ctx = canvas[0].getContext("2d");
+                    var chart = new Chart(ctx).Line({
+                        responsive: true,
+                        labels: labels,
+                        datasets: [{
+                                fillColor: "rgba(151,187,205,0.2)",
+                                strokeColor: "rgba(151,187,205,1)",
+                                pointColor: "rgba(151,187,205,1)",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "rgba(151,187,205,1)",
+                                data: source
+                            }, {
+                                fillColor: "rgba(220,220,220,0.2)",
+                                strokeColor: "#F7464A",
+                                pointColor: "#FF5A5E",
+                                pointStrokeColor: "#FF5A5E",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "red",
+                                data: target
+                            }]
+                    }, {});
+                }).on('hidden.bs.modal', function (event) {
+                    // reset canvas size
+                    var modal = $(this);
+                    var canvas = modal.find('.modal-body canvas');
+                    canvas.attr('width', '568px').attr('height', '300px');
+                    // destroy modal
+                    $(this).data('bs.modal', null);
+                });
             });
 
 

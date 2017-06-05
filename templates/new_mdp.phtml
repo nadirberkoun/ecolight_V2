@@ -26,32 +26,36 @@
         </style>
     </head>
     <body>
-<div class="text-center" style="padding:50px 0">
-    <div class="logo">Mot de passe oublié</div>
-    <!-- Main Form -->
-    <div class="login-form-1">
-        <form id="forgot-password-form" class="text-left">
-            <div class="etc-login-form">
-                <p>When you fill in your registered email address, you will be sent instructions on how to reset your password.</p>
-            </div>
-            <div class="login-form-main-message"></div>
-            <div class="main-login-form">
-                <div class="login-group">
-                    <div class="form-group">
-                        <label for="fp_email" class="sr-only">Adresse mail</label>
-                        <input type="text" class="form-control" id="fp_email" name="fp_email" placeholder="email address">
+        <div class="text-center" style="padding:50px 0">
+            <div class="logo">Mot de passe oublié</div>
+            <!-- Main Form -->
+            <div class="login-form-1">
+                <form id="forgot-password-form" class="text-left">
+                    <div class="etc-login-form">
+                        <p>Modifiez votre mot de passe</p>
                     </div>
-                </div>
-                <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
+                    <div class="login-form-main-message"></div>
+                    <div class="main-login-form">
+                        <div class="login-group">
+                            <div class="form-group">
+                                <label for="password" class="sr-only">Mot de passe :</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="mot de passe" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new_password" class="sr-only">Nouveau mot de passe :</label>
+                                <input type="new_password" class="form-control" id="password" name="new_password" placeholder="nouveau mot de passe" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
+                    </div>
+                    <div class="etc-login-form">
+                        <p>Déja un compte ? <a href="login">Connexion</a></p>
+                        <p>Nouvel utilisateur ? <a href="register">Créer un nouveau compte</a></p>
+                    </div>
+                </form>
             </div>
-            <div class="etc-login-form">
-                <p>Déja un compte ? <a href="login">Connexion</a></p>
-                <p>Nouvel utilisateur ? <a href="register">Créer un nouveau compte</a></p>
-            </div>
-        </form>
-    </div>
-    <!-- end:Main Form -->
-</div>
+            <!-- end:Main Form -->
+        </div>
 
     </body>
 </html>

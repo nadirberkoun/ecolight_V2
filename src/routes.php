@@ -101,12 +101,29 @@ $app->post('/doLogin', function ($request, $response, $args) {
 //////////////////   Changement MDP   //////////////////////////////////////////
 
 $app->get('/new_mdp', function ($request, $response, $args) {
-    // Render index view
-    return $this->renderer->render($response, 'new_mdp.phtml', $args);
+    $displayTemplate = $this->renderer->render($response, 'new_mdp.phtml', [
+        'modif' => $_SESSION['modif'],
+    ]);
+    unset($_SESSION['modif']);
+    return $displayTemplate;
 });
 
 $app->post('/doNew_mdp', function ($request, $response, $args) {
-    // Render index view
+    $modif = [
+        ':login' => $request->getParam('login'),
+        ':password' => $request->getParam('password'),
+        ':new_password' => $request->getParam('new_password'),
+    ];
+
+    if (verifAccount() == 0 && $request->getParam('password') == $request->getParam('new_password')) {
+        $msg = 'Ce login n\'existe pas ou le mot de passe est pas identique';
+    } else {
+        $sql = "update ecolight.Utilisateur set mdp_util = ':new_password' where login_util = ':login'";
+        $req = $dbh->prepare($sql);
+        $req->execute($tab);
+        $sInfo = $req->fetch(PDO::FETCH_ASSOC);
+    }
+
     return $this->renderer->render($response, 'new_mdp.phtml', $args);
 });
 
@@ -265,9 +282,9 @@ function getCapteurByPieceid() {
     return $result;
 }
 
-function getTempDatByCapteur() {
+function getTempByCapteur() {
 
-    $sql = "";
+    $sql = "select date_value, temperature_temp from ecolight.Date_valeur where id_capt_temp = 2";
     $result = true;
     try {
         $dbh = initDb();
@@ -282,9 +299,9 @@ function getTempDatByCapteur() {
     return $result;
 }
 
-function getLuminDataByCapteur() {
+function getLumByCapteur() {
 
-    $sql = "";
+    $sql = "select date_value, luminosite_lum from ecolight.Date_valeur where id_capt_lum = 2;";
     $result = true;
     try {
         $dbh = initDb();
