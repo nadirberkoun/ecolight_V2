@@ -80,20 +80,20 @@ $app->post('/doLogin', function ($request, $response, $args) {
 
 
 
-    /*if (verifAccount()== 0) {
-        $msg = 'Ce login n\'existe pas, merci de procéder à votre inscription';
-    } else {
-        $sql = "select * FROM `Utilisateur` WHERE `login_util` = :login and `mdp_util` = :mdp";
-        $req = $dbh->prepare($sql);
-        $req->execute($tab);
-        $sInfo = $req->fetch(PDO::FETCH_ASSOC);
+    /* if (verifAccount()== 0) {
+      $msg = 'Ce login n\'existe pas, merci de procéder à votre inscription';
+      } else {
+      $sql = "select * FROM `Utilisateur` WHERE `login_util` = :login and `mdp_util` = :mdp";
+      $req = $dbh->prepare($sql);
+      $req->execute($tab);
+      $sInfo = $req->fetch(PDO::FETCH_ASSOC);
 
-        if ($sInfo) {
-            $listuser = $req->fetchAll(PDO::FETCH_OBJ);
-        } else {
-            $msg = 'Mot de passe incorrect';
-        }
-    }*/
+      if ($sInfo) {
+      $listuser = $req->fetchAll(PDO::FETCH_OBJ);
+      } else {
+      $msg = 'Mot de passe incorrect';
+      }
+      } */
     //}
     return $this->renderer->render($response, 'dashboard.phtml', $args);
 });
@@ -214,29 +214,106 @@ function verifAccount($login) {
     return $res['count'];
 }
 
-
 function getProfileByUser() {
 
+    $sql = "select * from ecolight.Utilisateur where id_util = '1'";
+    $result = true;
+    try {
+        $dbh = initDb();
+        $req = $dbh->prepare($sql);
+        $result = $req->execute($data);
+        //$id = $db->lastInsertId();
+        $req = null;
+    } catch (PDOException $e) {
+        $_SESSION['error'] = 'Il y une erreur dans getProfileByUser';
+        $result = false;
+    }
+    return $result;
 }
 
 function getPieceByMaisonid() {
 
+    $sql = "select id_piece, nom_piece from ecolight.PIece where id_maison = '2'";
+    $result = true;
+    try {
+        $dbh = initDb();
+        $req = $dbh->prepare($sql);
+        $result = $req->execute($data);
+        //$id = $db->lastInsertId();
+        $req = null;
+    } catch (PDOException $e) {
+        $_SESSION['error'] = 'Il y une erreur dans getPieceByMaisonid';
+        $result = false;
+    }
+    return $result;
 }
 
-function getCapteurBypiueceid() {
+function getCapteurByPieceid() {
 
+    $sql = "select id_capt, nom_capt, type_capteur from ecolight.Capteur where id_piece = '2'";
+    $result = true;
+    try {
+        $dbh = initDb();
+        $req = $dbh->prepare($sql);
+        $result = $req->execute($data);
+        //$id = $db->lastInsertId();
+        $req = null;
+    } catch (PDOException $e) {
+        $_SESSION['error'] = 'Il y une erreur dans getCapteurBypiueceid';
+        $result = false;
+    }
+    return $result;
 }
 
-function gettempdatbycapteur() {
+function getTempDatByCapteur() {
 
+    $sql = "";
+    $result = true;
+    try {
+        $dbh = initDb();
+        $req = $dbh->prepare($sql);
+        $result = $req->execute($data);
+        //$id = $db->lastInsertId();
+        $req = null;
+    } catch (PDOException $e) {
+        $_SESSION['error'] = 'Il y une erreur dans gettempdatbycapteur';
+        $result = false;
+    }
+    return $result;
 }
 
-function getlumindatabycaptorid() {
+function getLuminDataByCapteur() {
 
+    $sql = "";
+    $result = true;
+    try {
+        $dbh = initDb();
+        $req = $dbh->prepare($sql);
+        $result = $req->execute($data);
+        //$id = $db->lastInsertId();
+        $req = null;
+    } catch (PDOException $e) {
+        $_SESSION['error'] = 'Il y une erreur dans getlumindatabycaptorid';
+        $result = false;
+    }
+    return $result;
 }
 
 function getMegaRequeteByUser() {
 
+    $sql = "";
+    $result = true;
+    try {
+        $dbh = initDb();
+        $req = $dbh->prepare($sql);
+        $result = $req->execute($data);
+        //$id = $db->lastInsertId();
+        $req = null;
+    } catch (PDOException $e) {
+        $_SESSION['error'] = 'Il y une erreur dans getMegaRequeteByUser';
+        $result = false;
+    }
+    return $result;
 }
 
 //+ routes avec var_dump = requetes
