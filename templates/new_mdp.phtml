@@ -26,41 +26,20 @@
         </style>
     </head>
     <body>
-        <div class="text-center" style="padding:50px 0">
-            <div class="logo">Mot de passe oublié</div>
-            <!-- Main Form -->
-            <?php if (!empty($modif)) { echo $modif;} ?>
-            <div class="login-form-1">
-                <form id="forgot-password-form" class="text-left">
-                    <div class="etc-login-form">
-                        <p>Modifiez votre mot de passe</p>
-                    </div>
-                    <div class="login-form-main-message"></div>
-                    <div class="main-login-form">
-                        <div class="login-group">
-                            <div class="form-group">
-                                <label for="password" class="sr-only">Mot de passe :</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="mot de passe" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="new_password" class="sr-only">Nouveau mot de passe :</label>
-                                <input type="password" class="form-control" id="password1" name="new_password" placeholder="nouveau mot de passe" required>
-                            </div>
-                             <div class="form-group">
-                                <label for="new_password2" class="sr-only">Nouveau mot de passe :</label>
-                                <input type="password" class="form-control" id="password2" name="new_password2" placeholder="Repetez le nouveau mot de passe" required>
-                            </div>
-                        </div>
-                        <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
-                    </div>
-                    <div class="etc-login-form">
-                        <p>Déja un compte ? <a href="login">Connexion</a></p>
-                        <p>Nouvel utilisateur ? <a href="register">Créer un nouveau compte</a></p>
-                    </div>
-                </form>
-            </div>
-            <!-- end:Main Form -->
-        </div>
+            <div class="container">
+            <p> <?php if (!empty($error)) { echo $error;} ?> </p>
+      <form class="form-signin" action="doNew_mdp" method="POST">
+        <h2 class="form-signin-heading">Changer mot de passe</h2>
+        <label for="current_password" class="sr-only">Mot de passe actuel</label>
+        <input type="password" id="password" class="form-control" name="current_password" placeholder="mot de passe" required autofocus>
+        <label for="new_password" class="sr-only">Nouveau mot de passe</label>
+        <input type="password" id="new_password" name="new_password" class="form-control" placeholder="mot de passe" required>
+         <label for="new_password2" class="sr-only">Confirmation nouveau mot de passe</label>
+        <input type="password" id="new_password2" name="new_password2" class="form-control" placeholder="mot de passe" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Modifier</button>
+      </form>
+
+    </div> <!-- /container -->
 
     </body>
 </html>

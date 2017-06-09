@@ -62,12 +62,13 @@ $app->post('/doRegister', function ($request, $response, $args) {
 
 $app->get('/login', function ($request, $response, $args) {
     // Render index view
-
+    $error = null;
+    if(isset($_SESSION['error'])) {
+        $error = $_SESSION['error'];
+    }
     $displayTemplate = $this->renderer->render($response, 'login.phtml', [
-        'hello' => $_SESSION['hello'],
-        'message' => 'Connectez vous avec votre compte'
+        'error' => $error,
     ]);
-    unset($_SESSION['hello']);
     return $displayTemplate;
 });
 
@@ -77,25 +78,26 @@ $app->post('/doLogin', function ($request, $response, $args) {
         ':email' => $request->getParam('email'),
         ':password' => $request->getParam('password'),
     ];
-
     if (isUserExist($request->getParam('email')) == 0 && isCurrentPassword($request->getParam('password'), $request->getParam('email'))) {
-        $msg = 'Ce login n\'existe pas, merci de procéder à votre inscription';
+        $_SESSION['error'] = 'Ce login n\'existe pas, merci de procéder à votre inscription';
+        return $response->withRedirect('login');
     } else {
-        $_SESSION['profil'] = getProfileByUserEmail($request->getParam('email'));
+        setSessionProfilData(getProfileByUserEmail($request->getParam('email')));
+        return $response->withRedirect('dashboard');
     }
-    //}
-    return $response->withRedirect('dashboard');
 });
 
 $app->get('/dashboard', function ($request, $response, $args) {
-
-    if (isset($_SESSION['profil'])) {
+    if (isset($_SESSION['profil']) && !empty($_SESSION['profil'])) {
         $displayTemplate = $this->renderer->render($response, 'dashboard.phtml', [
-                'message' => 'hello'
-            ]);
-            unset($_SESSION['hello']);
+            'message' => 'hello',
+            'success' => getSessionSuccess('resetPassword'),
+        ]);
+        unset($_SESSION['success']);
+        unset($_SESSION['error']);
+        unset($_SESSION['hello']);
     } else {
-         $displayTemplate = $response->withRedirect('login');
+        $displayTemplate = $response->withRedirect('login');
     }
     return $displayTemplate;
 });
@@ -121,26 +123,24 @@ $app->get('/dashboard', function ($request, $response, $args) {
 
 $app->get('/new_mdp', function ($request, $response, $args) {
     $displayTemplate = $this->renderer->render($response, 'new_mdp.phtml', [
-        '' => $request->getParam(''),
+        'error' => getSessionError('resetPassword'),
     ]);
-    unset($_SESSION['']);
     return $displayTemplate;
 });
 
 $app->post('/doNew_mdp', function ($request, $response, $args) {
-
-
     $modif = [
-        'current_passord' => $request->getParam('password'),
+        'current_password' => $request->getParam('current_password'),
         'new_password' => $request->getParam('new_password'),
         'new_password2' => $request->getParam('new_password2'),
     ];
-    $doModif = resetPassword($modif);
+    $doModif = resetPassword($modif, getSessionProfilData('id_util'));
 
     if ($doModif) {
-        $_SESSION['hello'] = 'hello tout va bien';
+        setSessionSuccess('resetPassword', 'Votre mot de passe a été mis à jour !');
         $result = $response->withRedirect('dashboard');
     } else {
+        setSessionError("resetPassword",'Ce login n\'existe pas ou le mot de passe est pas identique');
         $result = $response->withRedirect('new_mdp');
     }
 
@@ -181,7 +181,6 @@ function prepareProfil($data) {
 
     $error = 0;
     if (isUserExist($data[':email'])) {
-        var_dump('toto');
         $error = 1;
     } elseif (validEmail($data[':email'])) {
         $error = 2;
@@ -282,7 +281,7 @@ function getProfileByUseriD($id) {
 function getProfileByUserEmail($email) {
 
     $sql = "select * from ecolight.Utilisateur where mail_util = :email";
-    $result = '';
+    $result = null;
     try {
         $dbh = initDb();
         $req = $dbh->prepare($sql);
@@ -384,36 +383,83 @@ function getMegaRequeteByUser() {
     return $result;
 }
 
-function resetPassword($modif) {
-
-
-    if ($request->getParam('password') == $request->getParam('new_password') && isCurrentPassword($modif['current_password'], $_SESSION['profil']['id'])) {
-        $msg = 'Ce login n\'existe pas ou le mot de passe est pas identique';
-    } else {
-        $sql = "update ecolight.Utilisateur set mdp_util = ':new_password' where login_util = ':login'";
+function resetPassword($modif, $id) {
+    $update = false;
+    if ($modif['new_password'] == $modif['new_password2'] && isCurrentPasswordById($modif['current_password'], $id)) {
+        $sql = "update ecolight.Utilisateur set mdp_util = :new_password where id_util = :id";
+        $dbh = initDb();
         $req = $dbh->prepare($sql);
-        $req->execute($tab);
+        $req->bindParam("new_password", $modif['new_password']);
+        $req->bindParam("id", $id);
+        $req->execute();
         $sInfo = $req->fetch(PDO::FETCH_ASSOC);
+        $update = true;
     }
+    return $update;
 }
 
 function isCurrentPassword($current_password, $email) {
-
-
     $sql = "select count(*) as count from ecolight.Utilisateur where mdp_util = :current_password and mail_util = :email;";
+    $dbh = initDb();
     $req = $dbh->prepare($sql);
     $req->bindParam("current_password", $current_password);
     $req->bindParam("email", $email);
-    $req->execute($tab);
-    $sInfo = $req->fetch(PDO::FETCH_ASSOC);
+    $req->execute();
+    $result = $req->fetchAll(PDO::FETCH_ASSOC);
+
 }
+
+function isCurrentPasswordById($current_password, $id) {
+    $verif = false;
+    $sql = "select count(*) as count from ecolight.Utilisateur where mdp_util = :current_password and id_util = :id;";
+    $dbh = initDb();
+    $req = $dbh->prepare($sql);
+    $req->bindParam("current_password", $current_password);
+    $req->bindParam("id", $id);
+    $req->execute();
+    $result = $req->fetchAll(PDO::FETCH_ASSOC);
+    $result = reset($result);
+
+    if(intval($result['count']) > 0 ) {
+        $verif =true;
+    }
+    return $verif;
+}
+
 
 function getSessionProfilData($key) {
-    $email = null;
+    $data = null;
     if (isset($_SESSION['profil'][$key])) {
-        $email = $_SESSION['profil'][$key];
+        $data = $_SESSION['profil'][$key];
     }
-    return $email;
+    return $data;
 }
 
-//+ routes avec var_dump = requetes
+
+function setSessionProfilData($data) {
+    $_SESSION['profil'] = $data;
+}
+
+function getSessionError($key) {
+    $data = null;
+    if (isset($_SESSION['error'][$key])) {
+        $data = $_SESSION['error'][$key];
+    }
+    return $data;
+}
+
+function setSessionError($key,$message) {
+    $_SESSION['error'][$key] = $message;
+}
+
+function getSessionSuccess($key) {
+    $data = null;
+    if (isset($_SESSION['success'][$key])) {
+        $data = $_SESSION['success'][$key];
+    }
+    return $data;
+}
+
+function setSessionSuccess($key,$message) {
+    $_SESSION['success'][$key] = $message;
+}

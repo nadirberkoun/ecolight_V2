@@ -4,14 +4,13 @@
     <body>
 
     <div class="container">
-            <p> <?php if (!empty($message)) { echo $message;} ?> </p>
-            <p> <?php if (!empty($hello)) { echo $hello;} ?> </p>
+            <p> <?php if (!empty($error)) { echo $error;} ?> </p>
       <form class="form-signin" action="doLogin" method="POST">
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="email" class="sr-only">Email address</label>
-        <input type="email" id="email" class="form-control" placeholder="Email address" required autofocus>
+        <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus>
         <label for="password" class="sr-only">Password</label>
-        <input type="password" id="password" class="form-control" placeholder="Password" required>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Se coçnnecter</button>
       </form>
                                <div class="btn-group btn-group-lg" role="group" aria-label="...">
