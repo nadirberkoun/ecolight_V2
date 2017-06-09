@@ -18,17 +18,29 @@ $app->get('/', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Slim-Skeleton '/' route");
     // Render index view
-    return $this->renderer->render($response, 'index.phtml', $args);
+    //
+    return $this->renderer->render($response, 'index.phtml', [
+                'assets_home' => true,
+    ]);
 });
 
 ///////////////////   Enregistrement   /////////////////////////////////////////
 
 $app->get('/register', function ($request, $response, $args) {
-    // Render index view
-    print_r($_SESSION['error']);
-    $displayTemplate = $this->renderer->render($response, 'register.phtml', $args);
-
+    if (isset($_SESSION['profil']) && !empty($_SESSION['profil'])) {
+        $displayTemplate = $response->withRedirect('dashboard');
+    } else {
+        $error = null;
+        if (isset($_SESSION['error'])) {
+            $error = $_SESSION['error'];
+        }
+        $displayTemplate = $this->renderer->render($response, 'register.phtml', [
+            'error' => $error,
+        ]);
+    }
+    unset($_SESSION['success']);
     unset($_SESSION['error']);
+    unset($_SESSION['hello']);
     return $displayTemplate;
 });
 
@@ -62,13 +74,21 @@ $app->post('/doRegister', function ($request, $response, $args) {
 
 $app->get('/login', function ($request, $response, $args) {
     // Render index view
-    $error = null;
-    if(isset($_SESSION['error'])) {
-        $error = $_SESSION['error'];
+
+    if (isset($_SESSION['profil']) && !empty($_SESSION['profil'])) {
+        $displayTemplate = $response->withRedirect('dashboard');
+    } else {
+        $error = null;
+        if (isset($_SESSION['error'])) {
+            $error = $_SESSION['error'];
+        }
+        $displayTemplate = $this->renderer->render($response, 'login.phtml', [
+            'error' => $error,
+        ]);
     }
-    $displayTemplate = $this->renderer->render($response, 'login.phtml', [
-        'error' => $error,
-    ]);
+    unset($_SESSION['success']);
+    unset($_SESSION['error']);
+    unset($_SESSION['hello']);
     return $displayTemplate;
 });
 
@@ -92,6 +112,7 @@ $app->get('/dashboard', function ($request, $response, $args) {
         $displayTemplate = $this->renderer->render($response, 'dashboard.phtml', [
             'message' => 'hello',
             'success' => getSessionSuccess('resetPassword'),
+            'profil' => getMegaRequeteByUser(getSessionProfilData('id_util'))
         ]);
         unset($_SESSION['success']);
         unset($_SESSION['error']);
@@ -140,7 +161,7 @@ $app->post('/doNew_mdp', function ($request, $response, $args) {
         setSessionSuccess('resetPassword', 'Votre mot de passe a été mis à jour !');
         $result = $response->withRedirect('dashboard');
     } else {
-        setSessionError("resetPassword",'Ce login n\'existe pas ou le mot de passe est pas identique');
+        setSessionError("resetPassword", 'Ce login n\'existe pas ou le mot de passe est pas identique');
         $result = $response->withRedirect('new_mdp');
     }
 
@@ -366,14 +387,28 @@ function getLumByCapteur() {
     return $result;
 }
 
-function getMegaRequeteByUser() {
-
-    $sql = "";
-    $result = true;
+function getMegaRequeteByUser($id) {
+    $sql = "SELECT
+	u.id_util, u.nom_util, u.prenom_util,
+	m.id_maison,
+	p.id_piece, p.nom_piece,
+	c.id_capt, c.nom_capt,
+    c.type_capteur,
+	dt.date_value,
+    dt.luminosite_lum
+FROM Utilisateur u
+	inner join Preference pr on u.id_util = pr.id_pref
+	inner join Maison m on u.id_util = m.id_maison
+	inner join PIece p on m.id_maison = p.id_piece
+	right join Capteur c on p.id_piece = c.id_piece
+	inner join Date_valeur dt on c.id_capt = dt.id_capt_lum or  c.id_capt = dt.id_capt_temp
+    where u.id_util = :id";
     try {
         $dbh = initDb();
         $req = $dbh->prepare($sql);
-        $result = $req->execute($data);
+        $req->bindParam('id', $id);
+        $req->execute();
+        $result = $req->fetchAll(PDO::FETCH_OBJ);
         //$id = $db->lastInsertId();
         $req = null;
     } catch (PDOException $e) {
@@ -406,7 +441,6 @@ function isCurrentPassword($current_password, $email) {
     $req->bindParam("email", $email);
     $req->execute();
     $result = $req->fetchAll(PDO::FETCH_ASSOC);
-
 }
 
 function isCurrentPasswordById($current_password, $id) {
@@ -420,12 +454,11 @@ function isCurrentPasswordById($current_password, $id) {
     $result = $req->fetchAll(PDO::FETCH_ASSOC);
     $result = reset($result);
 
-    if(intval($result['count']) > 0 ) {
-        $verif =true;
+    if (intval($result['count']) > 0) {
+        $verif = true;
     }
     return $verif;
 }
-
 
 function getSessionProfilData($key) {
     $data = null;
@@ -434,7 +467,6 @@ function getSessionProfilData($key) {
     }
     return $data;
 }
-
 
 function setSessionProfilData($data) {
     $_SESSION['profil'] = $data;
@@ -448,7 +480,7 @@ function getSessionError($key) {
     return $data;
 }
 
-function setSessionError($key,$message) {
+function setSessionError($key, $message) {
     $_SESSION['error'][$key] = $message;
 }
 
@@ -460,6 +492,6 @@ function getSessionSuccess($key) {
     return $data;
 }
 
-function setSessionSuccess($key,$message) {
+function setSessionSuccess($key, $message) {
     $_SESSION['success'][$key] = $message;
 }
