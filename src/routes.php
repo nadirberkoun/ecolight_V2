@@ -3,7 +3,7 @@
 // Routes
 function initDb() {
     try {
-        return new PDO('mysql:host=localhost;dbname=ecolight', 'root', '');
+        return new PDO('mysql:host=192.168.1.252;dbname=ecolight', 'root', 'password');
     } catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
     }
