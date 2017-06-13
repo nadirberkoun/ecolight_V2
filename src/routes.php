@@ -3,7 +3,7 @@
 // Routes
 function initDb() {
     try {
-        return new PDO('mysql:host=localhost;dbname=ecolight', 'root', '');
+        return new PDO('mysql:host=192.168.1.252;dbname=ecolight', 'root', 'password');
     } catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
     }
@@ -124,23 +124,7 @@ $app->get('/dashboard', function ($request, $response, $args) {
     return $displayTemplate;
 });
 
-//$app->group('/admin', function () {
-//
-//        $this->get('/dashboard', function ($request, $response, $args) {
-//            // Render index view
-//            session_destroy();
-//            $displayTemplate = $this->renderer->render($response, 'dashboard.phtml', [
-//                'message' => 'hello'
-//            ]);
-//            unset($_SESSION['hello']);
-//            return $displayTemplate;
-//        });
-//
-//})->add(function ($request, $response, $next) {
-//        if (!isset($_SESSION['profil'])) {
-//            return $this->withRedirect('/login');
-//        }
-//});
+
 //////////////////   Changement MDP   //////////////////////////////////////////
 
 $app->get('/new_mdp', function ($request, $response, $args) {
@@ -265,19 +249,14 @@ function prepareProfil($data) {
         $error = 2;
     } elseif ($data[':password'] != $data[':password_confirm']) {
         $error = 3;
-    } elseif (strlen($data[':password']) < 7) {
-        $error = 4;
     }
     if ($error > 0) {
         if ($error == 1) {
             $_SESSION['error'] = 'email deja existant !';
-            //echo "email deja existant ! ";
         } elseif ($error == 2) {
             $_SESSION['error'] = 'email mal formatée !';
         } elseif ($error == 3) {
             $_SESSION['error'] = 'les mots de passes sont différents !';
-        } elseif ($error == 4) {
-            $_SESSION['error'] = 'Mots de passe trop court, il doit faire plus de sept caractères !';
         }
         $result = false;
     } else {
@@ -288,13 +267,13 @@ function prepareProfil($data) {
 }
 
 function createProfil($data) {
-    $sql = "INSERT INTO `Utilisateur` (`id_util`, `login_util`, `mdp_util`, `mail_util`, `nom_util`, `prenom_util`, `adresse_util`, `ville_util`, `cp_util`, `tel_util`) VALUES (null, :login, :password, :email, :nom, :prenom, :adresse, :ville, :cp, :tel)";
+    $sql = "INSERT INTO ecolight.Utilisateur (`id_util`, `login_util`, `mdp_util`, `mail_util`, `nom_util`, `prenom_util`, `adresse_util`, `ville_util`, `cp_util`, `tel_util`) VALUES (null, :login, :password, :email, :nom, :prenom, :adresse, :ville, :cp, :tel)";
     $result = true;
     try {
         $dbh = initDb();
         $req = $dbh->prepare($sql);
+        $req->bindParam('data', $data);
         $result = $req->execute($data);
-        //$id = $db->lastInsertId();
         $req = null;
     } catch (PDOException $e) {
         $_SESSION['error'] = 'Il y une erreur dans createProfil ';
@@ -452,7 +431,7 @@ function getValuesByCaptorId($id, $type) {
 
 function getMegaRequeteByUser($id) {
     $sql = "SELECT
-	u.id_util, u.nom_util, u.prenom_util,
+	u.id_util, u.nom_util, u.prenom_util,u.adresse_util, u.tel_util, u.CP_util, u.ville_util,
 	m.id_maison,
 	p.id_piece, p.nom_piece,
 	c.id_capt, c.nom_capt,
