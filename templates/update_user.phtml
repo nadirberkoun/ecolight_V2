@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <?php include "../templates/head.phtml" ?>
+    <body>
+        <div class="container">
+            <p> <?php
+                if (!empty($error)) {
+                    echo $error;
+                }
+                ?> </p>
+            <form class="login-form-1" action="doUpdate_user" method="POST">
+                <h2 class="form-signin-heading">Modification des données</h2>
+                <label for="nom" class="sr-only">Nom</label>
+                <input type="text" id="nom" class="form-control" name="nom" placeholder="nom" required autofocus>
+
+                <label for="prenom" class="sr-only">Prénom</label>
+                <input type="text" id="prenom" name="prenom" class="form-control" placeholder="prénom" required>
+
+                <label for="adresse" class="sr-only">Adresse</label>
+                <input type="text" id="adresse" name="adresse" class="form-control" placeholder="adresse" required>
+
+                <label for="ville" class="sr-only">Ville</label>
+                <input type="text" id="ville" name="ville" class="form-control" placeholder="ville" required>
+                
+                <label for="cp" class="sr-only">Code postal</label>
+                <input type="text" id="cp" name="cp" class="form-control" placeholder="code postal" required>
+                
+                <label for="tel" class="sr-only">Téléphone</label>
+                <input type="text" id="tel" name="tel" class="form-control" placeholder="téléphone" required>
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Modifier</button>
+            </form>
+
+        </div>
+    <?php include "../templates/footer.phtml" ?>
+    </div>
+<?php include "../templates/script.phtml" ?>
+</body>
+</html>
+
+
