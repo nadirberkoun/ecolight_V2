@@ -389,7 +389,7 @@ function getLumByCapteur() {
 
 function getMegaRequeteByUser($id) {
     $sql = "SELECT
-	u.id_util, u.nom_util, u.prenom_util,
+	u.id_util, u.nom_util, u.prezznom_util,
 	m.id_maison,
 	p.id_piece, p.nom_piece,
 	c.id_capt, c.nom_capt,
