@@ -112,7 +112,7 @@ $app->get('/dashboard', function ($request, $response, $args) {
         $displayTemplate = $this->renderer->render($response, 'dashboard.phtml', [
             'message' => 'hello',
             'success' => getSessionSuccess('resetPassword'),
-            'profil' => getMegaRequeteByUser(getSessionProfilData('id_util'))
+            'profil' => getMegaRequeteByUser($_SESSION['profil']['id_util'])
         ]);
         unset($_SESSION['success']);
         unset($_SESSION['error']);
@@ -120,6 +120,7 @@ $app->get('/dashboard', function ($request, $response, $args) {
     } else {
         $displayTemplate = $response->withRedirect('login');
     }
+    var_dump(getMegaRequeteByUser(1));
     return $displayTemplate;
 });
 
@@ -389,7 +390,7 @@ function getLumByCapteur() {
 
 function getMegaRequeteByUser($id) {
     $sql = "SELECT
-	u.id_util, u.nom_util, u.prezznom_util,
+	u.id_util, u.nom_util, u.prenom_util,
 	m.id_maison,
 	p.id_piece, p.nom_piece,
 	c.id_capt, c.nom_capt,
