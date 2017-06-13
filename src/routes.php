@@ -149,11 +149,36 @@ $app->post('/doNew_mdp', function ($request, $response, $args) {
         setSessionError("resetPassword", 'Ce login n\'existe pas ou le mot de passe est pas identique');
         $result = $response->withRedirect('new_mdp');
     }
-
     return $result;
-
-    //return $this->renderer->render($response, 'dashboard.phtml', $args);
 });
+
+$app->get('/update_user', function ($request, $response, $args) {
+    $displayTemplate = $this->renderer->render($response, 'update_user.phtml', [
+    ]);
+    return $displayTemplate;
+});
+
+$app->post('/doUpdate_user', function ($request, $response, $args) {
+    $modif = [
+        'nom' => $request->getParam('nom'),
+        'prenom' => $request->getParam('prenom'),
+        'adresse' => $request->getParam('adresse'),
+        'ville' => $request->getParam('ville'),
+        'cp' => $request->getParam('cp'),
+        'tel' => $request->getParam('tel'),
+    ];
+    $doModif = setDataUser($modif);
+
+    if ($doModif) {
+        setSessionSuccess('updatedata', 'Vos informations ont été mis à jour !');
+        $result = $response->withRedirect('dashboard');
+    } else {
+        setSessionError("updatedata", 'Veuillez recommencer');
+        $result = $response->withRedirect('update_user');
+    }
+    return $result;
+});
+
 
 // WS Android, requeter en JAVA
 $app->get('/getprofil[/{id}]', function ($request, $response, $args) {
@@ -273,7 +298,7 @@ function createProfil($data) {
         $dbh = initDb();
         $req = $dbh->prepare($sql);
         $req->bindParam('data', $data);
-        $result = $req->execute($data);
+        $result = $req->execute();
         $req = null;
     } catch (PDOException $e) {
         $_SESSION['error'] = 'Il y une erreur dans createProfil ';
@@ -536,4 +561,21 @@ function getSessionSuccess($key) {
 
 function setSessionSuccess($key, $message) {
     $_SESSION['success'][$key] = $message;
+}
+
+function setDataUser($id) {
+
+    $sql = "update ecolight.Utilisateur set nom_util = :nom, prenom_util = :prenom, adresse_util = :adresse, ville_util = :ville, CP_util = :cp, tel_util = :tel  where id_util = :id";
+    $dbh = initDb();
+    $req = $dbh->prepare($sql);
+    $req->bindParam("nom", $modif['nom']);
+    $req->bindParam("prenom", $modif['prenom']);
+    $req->bindParam("adresse", $modif['adresse']);
+    $req->bindParam("ville", $modif['ville']);
+    $req->bindParam("cp", $modif['cp']);
+    $req->bindParam("tel", $modif['tel']);
+    $req->bindParam("id", $id);
+    $req->execute();
+    $sInfo = $req->fetch(PDO::FETCH_ASSOC);
+
 }

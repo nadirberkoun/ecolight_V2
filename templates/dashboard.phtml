@@ -6,16 +6,20 @@
         <div class="container">
             <?php include "../templates/header.phtml" ?>
             <?php $current_profil = reset($profil); ?>
-            <?php var_dump($current_profil); ?>
+            <?php// var_dump($current_profil); ?>
             <div class="jumbotron">
                 <h1><?= $current_profil->nom_util . " " . $current_profil->prenom_util; ?></h1>
-                <ul class="list-group" id="user_info">
-                    <li class="list-group-u"  ><?= $current_profil->adresse_util;?></li>
-                    <li class="list-group-u"  ><?= $current_profil->ville_util;?></li>
-                    <li class="list-group-u"  ><?= $current_profil->cp_util;?></li>
-                    <li class="list-group-u"  ><?= $current_profil->tel_util;?></li>    
+                <ul class="list-group  col-md-9" id="user_info">
+                    <li class="list-group-u"  >Adresse     : <?= $current_profil->adresse_util;?></li>
+                    <li class="list-group-u"  >Ville       : <?= $current_profil->ville_util;?></li>
+                    <li class="list-group-u"  >Code postal : <?= $current_profil->CP_util;?></li>
+                    <li class="list-group-u"  >Téléphone   : <?= $current_profil->tel_util;?></li>    
                 </ul>
-                <p><a class="btn btn-lg btn-success" href="#" role="button">Modifier</a></p>
+                <p><a class="btn btn-lg btn-success" href="logout" role="button">Déconnexion</a></p>
+                <p><a class="btn btn-lg btn-success" href="new_mdp" role="button">Modifier mot de passe</a></p>
+                <p><a class="btn btn-lg btn-success" href="update_user" role="button">Modifier</a></p>
+                
+                
             </div>
 
             <div class="row marketing">

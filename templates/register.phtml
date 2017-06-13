@@ -3,64 +3,68 @@
     <?php include "../templates/head.phtml" ?>
     <body>
         <!-- enregistrement -->
-        <div class="container">
-            <div class="text-center" style="padding:50px 0">
-                <div class="logo">Enregistrement</div>
-                <p></p>
-                <div class="login-form-1">
-                    <form id="register-form" class="text-left" action="doRegister" method="POST">
-                        <div class="login-form-main-message"></div>
-                        <div class="main-login-form">
-                            <div class="login-group">
+    <div class="container">
+        <div class="text-center" style="padding:50px 0">
+            <div class="logo">Enregistrement</div>
+            <p></p>
+            <div class="login-form-1">
+                <form id="register-form" class="text-left" action="doRegister" method="POST">
+                    <div class="login-form-main-message"></div>
+                    <div class="main-login-form">
+                        <div class="login-group">
 
-                                <div class="form-group">
-                                    <label for="email" class="sr-only">Email :</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="email" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password" class="sr-only">Mot de passe :</label>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="mot de passe" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password_confirm" class="sr-only">Confirmer :</label>
-                                    <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="mot de passe" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="nom" class="sr-only">Nom  :</br></label>
-                                    <input type="text" class="form-control" id="nom" name="nom" placeholder="nom">
-                                </div>
-                                <div class="form-group">
-                                    <label for="prenom" class="sr-only">Prenom  :</label>
-                                    <input type="text" class="form-control" id="prenom" name="prenom" placeholder="prénom">
-                                </div>
-                                <div class="form-group">
-                                    <label for="adresse" class="sr-only"> Adresse :</label>
-                                    <input type="text" class="form-control" id="adresse" name="adresse" placeholder="votre adresse" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="ville" class="sr-only">Ville :</br></label>
-                                    <input type="text" class="form-control" id="ville" name="ville" placeholder="ville" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="cp" class="sr-only">Code postal :</label>
-                                    <input type="text" class="form-control" id="cp" name="cp" placeholder="code postal" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tel" class="sr-only">Téléphone :</label>
-                                    <input type="text" class="form-control" id="tel" name="tel" placeholder="téléphone" required>
-                                </div>
+                            <div class="form-group">
+                                <label for="login" class="sr-only"> Login :</label>
+                                <input type="text" class="form-control" id="login" name="login" placeholder="login" required>
                             </div>
-                            <input type="submit" name="enregistrer" value="Enregistrer" class="button">
+                            <div class="form-group">
+                                <label for="email" class="sr-only">Email :</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="sr-only">Mot de passe :</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="mot de passe" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password_confirm" class="sr-only">Confirmer :</label>
+                                <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="mot de passe" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="nom" class="sr-only">Nom  :</br></label>
+                                <input type="text" class="form-control" id="nom" name="nom" placeholder="nom">
+                            </div>
+                            <div class="form-group">
+                                <label for="prenom" class="sr-only">Prenom  :</label>
+                                <input type="text" class="form-control" id="prenom" name="prenom" placeholder="prénom">
+                            </div>
+                            <div class="form-group">
+                                <label for="adresse" class="sr-only"> Adresse :</label>
+                                <input type="text" class="form-control" id="adresse" name="adresse" placeholder="votre adresse" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ville" class="sr-only">Ville :</br></label>
+                                <input type="text" class="form-control" id="ville" name="ville" placeholder="ville" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cp" class="sr-only">Code postal :</label>
+                                <input type="text" class="form-control" id="cp" name="cp" placeholder="code postal" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tel" class="sr-only">Téléphone :</label>
+                                <input type="text" class="form-control" id="tel" name="tel" placeholder="téléphone" required>
+                            </div>
                         </div>
-                        <div class="etc-login-form">
-                            <p>Déja un compte? <a href="login">Se connecter</a></p>
-                        </div>
-                    </form>
-                </div>
-                <?php include "../templates/footer.phtml" ?>
+                        <input type="submit" name="enregistrer" value="Enregistrer" class="button">
+                    </div>
+                    <div class="etc-login-form">
+                        <p>Déja un compte? <a href="login">Se connecter</a></p>
+                    </div>
+                </form>
             </div>
-            <?php include "../templates/script.phtml" ?>
+            <?php include "../templates/footer.phtml" ?>
+        </div>
+        <?php include "../templates/script.phtml" ?>
     </body>
 </html>
 

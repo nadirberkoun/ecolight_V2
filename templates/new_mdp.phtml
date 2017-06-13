@@ -1,47 +1,27 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <title>Slim 3</title>
-        <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
-        <style>
-            body {
-                margin: 50px 0 0 0;
-                padding: 0;
-                width: 100%;
-                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                text-align: center;
-                color: #aaa;
-                font-size: 18px;
-            }
-
-            h1 {
-                color: #719e40;
-                letter-spacing: -3px;
-                font-family: 'Lato', sans-serif;
-                font-size: 100px;
-                font-weight: 200;
-                margin-bottom: 0;
-            }
-        </style>
-    </head>
+    <?php include "../templates/head.phtml" ?>
     <body>
-            <div class="container">
-            <p> <?php if (!empty($error)) { echo $error;} ?> </p>
-      <form class="form-signin" action="doNew_mdp" method="POST">
-        <h2 class="form-signin-heading">Changer mot de passe</h2>
-        <label for="current_password" class="sr-only">Mot de passe actuel</label>
-        <input type="password" id="password" class="form-control" name="current_password" placeholder="mot de passe" required autofocus>
-        <label for="new_password" class="sr-only">Nouveau mot de passe</label>
-        <input type="password" id="new_password" name="new_password" class="form-control" placeholder="mot de passe" required>
-         <label for="new_password2" class="sr-only">Confirmation nouveau mot de passe</label>
-        <input type="password" id="new_password2" name="new_password2" class="form-control" placeholder="mot de passe" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Modifier</button>
-      </form>
+        <div class="container">
+            <p> <?php if (!empty($error)) {
+        echo $error;
+    } ?> </p>
+            <form class="form-signin" action="doNew_mdp" method="POST">
+                <h2 class="form-signin-heading">Changer mot de passe</h2>
+                <label for="current_password" class="sr-only">Mot de passe actuel</label>
+                <input type="password" id="password" class="form-control" name="current_password" placeholder="mot de passe" required autofocus>
+                <label for="new_password" class="sr-only">Nouveau mot de passe</label>
+                <input type="password" id="new_password" name="new_password" class="form-control" placeholder="mot de passe" required>
+                <label for="new_password2" class="sr-only">Confirmation nouveau mot de passe</label>
+                <input type="password" id="new_password2" name="new_password2" class="form-control" placeholder="mot de passe" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Modifier</button>
+            </form>
 
-    </div> <!-- /container -->
-
-    </body>
+        </div>
+    <?php include "../templates/footer.phtml" ?>
+    </div>
+<?php include "../templates/script.phtml" ?>
+</body>
 </html>
 
 
