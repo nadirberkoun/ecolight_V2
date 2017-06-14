@@ -3,7 +3,7 @@
 // Routes
 function initDb() {
     try {
-        return new PDO('mysql:host=192.168.1.252;dbname=ecolight', 'root', 'password');
+        return new PDO('mysql:host=localhost;dbname=ecolight', 'root', '');
     } catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
     }
@@ -112,7 +112,8 @@ $app->get('/dashboard', function ($request, $response, $args) {
         $displayTemplate = $this->renderer->render($response, 'dashboard.phtml', [
             'message' => 'hello',
             'success' => getSessionSuccess('resetPassword'),
-            'profil' => getMegaRequeteByUser($_SESSION['profil']['id_util'])
+            'profil' => getMegaRequeteByUser($_SESSION['profil']['id_util']),
+            'maisons' => getMaisonByUSerId($_SESSION['profil']['id_util'])
         ]);
         unset($_SESSION['success']);
         unset($_SESSION['error']);
@@ -181,9 +182,22 @@ $app->get('/logout', function ($request, $response, $args) {
 
     session_destroy();
 
-        $result = $response->withRedirect('dashboard');
+    $result = $response->withRedirect('dashboard');
 
     return $result;
+});
+
+$app->post('/getPieceByIdMaison', function ($request, $response, $args) {
+    $pieces = getPiecesByMaisonId(2);
+    $body = '<ul class="list-group">';
+
+    foreach ($pieces as $piece) {
+
+        $body .= '<li class="list-group-item" data-maison-id="' . $piece->id_piece . '" ><button onclick="selectPiece(' . $piece->id_piece . ');">selectionner  Piece N° ' . $piece->id_piece . '</button></li>';
+    }
+    $body .= "</ul>";
+    $response->write(json_encode($body));
+    return $response;
 });
 
 /////////////////   Validation email   /////////////////////////////////////////
@@ -328,15 +342,32 @@ function getProfileByUserEmail($email) {
     return $result;
 }
 
-function getPieceByMaisonid() {
-
-    $sql = "select id_piece, nom_piece from ecolight.PIece where id_maison = '2'";
+function getMaisonByUSerId($id) {
+    $sql = "select * from ecolight.Maison where id_util= :id";
     $result = true;
     try {
         $dbh = initDb();
         $req = $dbh->prepare($sql);
-        $result = $req->execute($data);
-        //$id = $db->lastInsertId();
+        $req->bindParam('id', $id);
+        $req->execute();
+        $result = $req->fetchAll(PDO::FETCH_OBJ);
+        $req = null;
+    } catch (PDOException $e) {
+        $_SESSION['error'] = 'Il y une erreur dans getMaisonByUSerId';
+        $result = false;
+    }
+    return $result;
+}
+
+function getPiecesByMaisonId($id) {
+    $sql = "select * from ecolight.PIece where id_maison= :id";
+    $result = true;
+    try {
+        $dbh = initDb();
+        $req = $dbh->prepare($sql);
+        $req->bindParam('id', $id);
+        $req->execute();
+        $result = $req->fetchAll(PDO::FETCH_OBJ);
         $req = null;
     } catch (PDOException $e) {
         $_SESSION['error'] = 'Il y une erreur dans getPieceByMaisonid';

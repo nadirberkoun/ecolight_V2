@@ -24,24 +24,40 @@ if ($assets_home) {
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#table-id-l').DataTable( {
-        "language": {
-            "lengthMenu": "Display _MENU_ records per page",
-            "zeroRecords": "Nothing found - sorry",
-            "info": "Showing page _PAGE_ of _PAGES_",
-            "infoEmpty": "No records available",
-            "infoFiltered": "(filtered from _MAX_ total records)"
-        }
-    } );
-        $('#table-id-t').DataTable( {
-        "language": {
-            "lengthMenu": "Display _MENU_ records per page",
-            "zeroRecords": "Nothing found - sorry",
-            "info": "Showing page _PAGE_ of _PAGES_",
-            "infoEmpty": "No records available",
-            "infoFiltered": "(filtered from _MAX_ total records)"
-        }
-    } );
+        $('#table-id-l').DataTable({
+            "language": {
+                "lengthMenu": "Display _MENU_ records per page",
+                "zeroRecords": "Nothing found - sorry",
+                "info": "Showing page _PAGE_ of _PAGES_",
+                "infoEmpty": "No records available",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            }
+        });
+        $('#table-id-t').DataTable({
+            "language": {
+                "lengthMenu": "Display _MENU_ records per page",
+                "zeroRecords": "Nothing found - sorry",
+                "info": "Showing page _PAGE_ of _PAGES_",
+                "infoEmpty": "No records available",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            }
+        });
     });
+    function selectPiece($id) {
+
+        $.ajax({
+            url: 'getPieceByIdMaison',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: JSON.stringify($id)
+            },
+            success: function (data) {
+                var emptydiv = $('#mypieces').find('li');
+                emptydiv.replaceWith(JSON.parse(data));
+            }
+        });
+
+    }
 </script>
 

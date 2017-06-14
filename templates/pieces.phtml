@@ -1,0 +1,6 @@
+
+<ul class="list-group">
+    <?php foreach ($pieces as $piece) : ?>
+        <li class="list-group-item" data-maison-id="<?= $piece->id_piece ?>" ><button onclick="selectPiece(<?= $piece->id_piece ?>);">selectionner  Piece N° <?= $piece->id_piece ?></button></li>
+        <?php endforeach; ?>
+</ul>
