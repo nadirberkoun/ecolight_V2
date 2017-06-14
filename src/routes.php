@@ -120,7 +120,6 @@ $app->get('/dashboard', function ($request, $response, $args) {
     } else {
         $displayTemplate = $response->withRedirect('login');
     }
-    var_dump(getMegaRequeteByUser(1));
     return $displayTemplate;
 });
 
@@ -176,6 +175,15 @@ $app->get('/getprofil[/{id}]', function ($request, $response, $args) {
     $dataAry = getProfileByUseriD($args['id']);
     $response->write(json_encode($dataAry));
     return $response;
+});
+
+$app->get('/logout', function ($request, $response, $args) {
+
+    session_destroy();
+
+        $result = $response->withRedirect('dashboard');
+
+    return $result;
 });
 
 /////////////////   Validation email   /////////////////////////////////////////
@@ -396,7 +404,7 @@ function getMegaRequeteByUser($id) {
 	c.id_capt, c.nom_capt,
     c.type_capteur,
 	dt.date_value,
-    dt.luminosite_lum
+    dt.luminosite_lum, dt.temperature_temp
 FROM Utilisateur u
 	inner join Preference pr on u.id_util = pr.id_pref
 	inner join Maison m on u.id_util = m.id_maison

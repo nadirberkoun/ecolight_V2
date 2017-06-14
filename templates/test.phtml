@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <?php include "../templates/head.phtml" ?>
+    <body>
+
+    <div class="container">
+            <p> <?php if (!empty($error)) { echo $error;} ?> </p>
+
+                    <?php var_dump($_SESSION); ?>
+
+            <?php include "../templates/footer.phtml" ?>
+        </div>
+        <?php include "../templates/script.phtml" ?>
+    </body>
+</html>

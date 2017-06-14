@@ -15,27 +15,72 @@
 
             <div class="row marketing">
                            <a href="new_mdp.phtml">Changer mot de passe</a>
-                <div class="col-lg-6">
-                    <h4>Subheading</h4>
-                    <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+                           <a href="logout">Déconnexion</a>
 
-                    <h4>Subheading</h4>
-                    <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+                     <div class="content">
+	            <div class="container-fluid">
+	                <div class="row">
+	                    <div class="col-md-6">
+	                        <div class="card">
+	                            <div class="card-header" data-background-color="purple">
+	                                <h4 class="title">Tableau de données</h4>
+	                                <p class="category">Luminosité</p>
+	                            </div>
+	                            <div class="card-content table-responsive">
+	                                <table class="table" id="table-id-l">
+	                                    <thead class="text-primary">
+	                                    	<th>Nom pièce</th>
+	                                    	<th>Date / Heure</th>
+						<th>Valeur</th>
+	                                    </thead>
+	                                    <tbody>
+                                                <?php foreach ($profil as $data) :?>
+                                                <?php if( $data->type_capteur == 'L') :?>
+                                                    <tr>
+                                                            <td><?= $data->nom_capt; ?></td>
+                                                            <td><?= $data->date_value; ?></td>
+                                                            <td class="text-primary"><?= $data->luminosite_lum.' %'; ?></td>
+                                                    </tr>
+                                                <?php endif;?>
+                                                <?php endforeach;?>
+	                                    </tbody>
+	                                </table>
 
-                    <h4>Subheading</h4>
-                    <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+                            <div class="col-md-6">
+	                        <div class="card">
+	                            <div class="card-header" data-background-color="purple">
+	                                <h4 class="title">Tableau de données</h4>
+	                                <p class="category">Luminosité</p>
+	                            </div>
+	                            <div class="card-content table-responsive">
+	                                <table class="table" id="table-id-t">
+	                                    <thead class="text-primary">
+	                                    	<th>Nom pièce</th>
+	                                    	<th>Date / Heure</th>
+						<th>Valeur</th>
+	                                    </thead>
+	                                    <tbody>
+                                                <?php foreach ($profil as $data) :?>
+                                                <?php if( $data->type_capteur == 'T') :?>
+                                                    <tr>
+                                                            <td><?= $data->nom_capt; ?></td>
+                                                            <td><?= $data->date_value; ?></td>
+                                                            <td class="text-primary"><?= $data->temperature_temp.' °C'; ?></td>
+                                                    </tr>
+                                                <?php endif;?>
+                                                <?php endforeach;?>
+	                                    </tbody>
+	                                </table>
 
-                <div class="col-lg-6">
-                    <h4>Subheading</h4>
-                    <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-                    <h4>Subheading</h4>
-                    <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-                    <h4>Subheading</h4>
-                    <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
             </div>
             <?php include "../templates/footer.phtml" ?>
         </div>
