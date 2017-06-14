@@ -24,37 +24,74 @@ if ($assets_home) {
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#table-id-l').DataTable({
-            "language": {
-                "lengthMenu": "Display _MENU_ records per page",
-                "zeroRecords": "Nothing found - sorry",
-                "info": "Showing page _PAGE_ of _PAGES_",
-                "infoEmpty": "No records available",
-                "infoFiltered": "(filtered from _MAX_ total records)"
-            }
-        });
-        $('#table-id-t').DataTable({
-            "language": {
-                "lengthMenu": "Display _MENU_ records per page",
-                "zeroRecords": "Nothing found - sorry",
-                "info": "Showing page _PAGE_ of _PAGES_",
-                "infoEmpty": "No records available",
-                "infoFiltered": "(filtered from _MAX_ total records)"
-            }
-        });
+        $('#table-values').hide();
     });
-    function selectPiece($id) {
-
+    function selectMaison(id) {
+        $('#table-values').hide();
         $.ajax({
             url: 'getPieceByIdMaison',
             type: 'POST',
             dataType: 'text',
             data: {
-                id: JSON.stringify($id)
+                id: JSON.stringify(id)
             },
             success: function (data) {
-                var emptydiv = $('#mypieces').find('li');
-                emptydiv.replaceWith(JSON.parse(data));
+                var emptydiv = $('#mypieces');
+                var emptydivli = emptydiv.find('li');
+                emptydivli.remove();
+                emptydiv.append(JSON.parse(data));
+            }
+        });
+
+    }
+
+    function selectPiece(id) {
+        $('#table-values').hide();
+        $.ajax({
+            url: 'getCaptorByIdPiece',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: JSON.stringify(id)
+            },
+            success: function (data) {
+                var emptydiv = $('#mycaptors');
+                var emptydivli = emptydiv.find('li');
+                emptydivli.remove();
+                emptydiv.append(JSON.parse(data));
+            }
+        });
+
+    }
+
+    function selectCaptor(id, type) {
+
+        $.ajax({
+            url: 'getValuesByCaptorId',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: JSON.stringify(id),
+                type: type
+            },
+            success: function (data) {
+                var emptydiv = $('#mycaptortype');
+                var emptydivthead = emptydiv.find('thead');
+                var emptydivtbody = emptydiv.find('tbody');
+                emptydivthead.remove();
+                emptydivtbody.remove();
+                emptydiv.append(JSON.parse(data));
+                /*$('#mycaptortype').DataTable({
+                    "language": {
+                        "lengthMenu": "Display _MENU_ records per page",
+                        "zeroRecords": "Nothing found - sorry",
+                        "info": "Showing page _PAGE_ of _PAGES_",
+                        "infoEmpty": "No records available",
+                        "infoFiltered": "(filtered from _MAX_ total records)"
+                    }
+                });*/
+                $('#table-values').show();
+
             }
         });
 

@@ -20,24 +20,29 @@
                 <div class="content">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="card">
                                     <div class="card-header card-chart" data-background-color="green">
-                                        <div class="ct-chart" id="dailySalesChart"></div>
+                                        <div class="ct-chart" id="dailySalesChart">
+                                            <div class="text-center">
+                                                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div class="card-content">
                                         <h4 class="title">Maison</h4>
                                         <p class="category"><span class="text-success"><i class="fa fa-long-arrow-up"></i></span> Vos maisons</p>
                                         <ul class="list-group">
                                             <?php foreach ($maisons as $maison) : ?>
-                                            <li class="list-group-item" data-maison-id="<?= $maison->id_maison ?>" ><button onclick="selectPiece(<?= $maison->id_maison ?>);">selectionner Maison N° <?= $maison->id_maison ?></button></li>
+                                                <li class="list-group-item" data-maison-id="<?= $maison->id_maison ?>" ><button onclick="selectMaison(<?= $maison->id_maison ?>);">selectionner Maison N° <?= $maison->id_maison ?></button></li>
                                             <?php endforeach; ?>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="card">
                                     <div class="card-header card-chart" data-background-color="orange">
                                         <div class="ct-chart" id="emailsSubscriptionChart"></div>
@@ -46,13 +51,26 @@
                                         <h4 class="title">Pieces</h4>
                                         <p class="category">vos pieces</p>
                                         <ul class="list-group" id="mypieces">
-                                                <li class="list-group-item"  >Veuillez selectionner une maison</li>
+                                            <li class="list-group-item"  >Veuillez selectionner une piece</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-header card-chart" data-background-color="orange">
+                                        <div class="ct-chart" id="emailsSubscriptionChart"></div>
+                                    </div>
+                                    <div class="card-content">
+                                        <h4 class="title">Capteurs</h4>
+                                        <p class="category">vos capteurs</p>
+                                        <ul class="list-group" id="mycaptors">
+                                            <li class="list-group-item"  >Veuillez selectionner un capteur</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="card">
                                     <div class="card-header card-chart" data-background-color="red">
                                         <div class="ct-chart" id="completedTasksChart"></div>
@@ -69,62 +87,17 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
+                        <div class="row" id='table-values'>
+                            <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header" data-background-color="purple">
                                         <h4 class="title">Tableau de données</h4>
                                         <p class="category">Luminosité</p>
                                     </div>
                                     <div class="card-content table-responsive">
-                                        <table class="table" id="table-id-l">
-                                            <thead class="text-primary">
-                                            <th>Nom pièce</th>
-                                            <th>Date / Heure</th>
-                                            <th>Valeur</th>
-                                            </thead>
-                                            <tbody>
-                                                <?php foreach ($profil as $data) : ?>
-                                                    <?php if ($data->type_capteur == 'L') : ?>
-                                                        <tr>
-                                                            <td><?= $data->nom_capt; ?></td>
-                                                            <td><?= $data->date_value; ?></td>
-                                                            <td class="text-primary"><?= $data->luminosite_lum . ' %'; ?></td>
-                                                        </tr>
-                                                    <?php endif; ?>
-                                                <?php endforeach; ?>
-                                            </tbody>
-                                        </table>
+                                        <table class="table" id="mycaptortype">
 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header" data-background-color="purple">
-                                        <h4 class="title">Tableau de données</h4>
-                                        <p class="category">Luminosité</p>
-                                    </div>
-                                    <div class="card-content table-responsive">
-                                        <table class="table" id="table-id-t">
-                                            <thead class="text-primary">
-                                            <th>Nom pièce</th>
-                                            <th>Date / Heure</th>
-                                            <th>Valeur</th>
-                                            </thead>
-                                            <tbody>
-                                                <?php foreach ($profil as $data) : ?>
-                                                    <?php if ($data->type_capteur == 'T') : ?>
-                                                        <tr>
-                                                            <td><?= $data->nom_capt; ?></td>
-                                                            <td><?= $data->date_value; ?></td>
-                                                            <td class="text-primary"><?= $data->temperature_temp . ' °C'; ?></td>
-                                                        </tr>
-                                                    <?php endif; ?>
-                                                <?php endforeach; ?>
-                                            </tbody>
                                         </table>
-
                                     </div>
                                 </div>
                             </div>

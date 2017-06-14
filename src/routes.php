@@ -188,15 +188,50 @@ $app->get('/logout', function ($request, $response, $args) {
 });
 
 $app->post('/getPieceByIdMaison', function ($request, $response, $args) {
-    $pieces = getPiecesByMaisonId(2);
-    $body = '<ul class="list-group">';
-
+    $pieces = getPiecesByMaisonId($request->getParam('id'));
+    $body = '';
     foreach ($pieces as $piece) {
 
-        $body .= '<li class="list-group-item" data-maison-id="' . $piece->id_piece . '" ><button onclick="selectPiece(' . $piece->id_piece . ');">selectionner  Piece N° ' . $piece->id_piece . '</button></li>';
+        $body .= '<li class="list-group-item"><button onclick="selectPiece(' . $piece->id_piece . ');">selectionner  la Piece : ' . $piece->nom_piece . '</button></li>';
     }
-    $body .= "</ul>";
     $response->write(json_encode($body));
+    return $response;
+});
+
+$app->post('/getCaptorByIdPiece', function ($request, $response, $args) {
+    $captors = getCaptorsByPieceId($request->getParam('id'));
+    $body = '';
+    foreach ($captors as $captor) {
+
+        $body .= '<li class="list-group-item"><button onclick="selectCaptor(' . $captor->id_capt . ',\'' . $captor->type_capteur . '\');">selectionner  le capteur de : ' . $captor->type_capteur . '</button></li>';
+    }
+    $response->write(json_encode($body));
+    return $response;
+});
+
+$app->post('/getValuesByCaptorId', function ($request, $response, $args) {
+
+    $values = getValuesByCaptorId($request->getParam('id'), $request->getParam('type'));
+    $type = $request->getParam('type');
+
+    if (!empty($values)) {
+        $body = '<thead class="text-primary"><th>Nom pièce</th><th>Date / Heure</th><th>Valeur</th></thead><tbody>';
+        foreach ($values as $value) {
+
+            if ($type == 'L') {
+                $body .= '<tr><td>' . $value->nom_capt . '</td><td>' . $value->date_value . '</td><td>' . $value->luminosite_lum . '</td></tr>';
+            } else if ($type == 'T') {
+                $body .= '<tr><td>' . $value->nom_capt . '</td><td>' . $value->date_value . '</td><td>' . $value->temperature_temp . '</td></tr>';
+            }
+        }
+        $body .= '</tbody>';
+    } else {
+        $body = '<tbody><tr><td>Il n\'y a pas encore de valeurs pour ce capteur !</td></tr></tbody>';
+    }
+
+
+    $response->write(json_encode($body));
+
     return $response;
 });
 
@@ -376,52 +411,40 @@ function getPiecesByMaisonId($id) {
     return $result;
 }
 
-function getCapteurByPieceid() {
+function getCaptorsByPieceId($id) {
 
-    $sql = "select id_capt, nom_capt, type_capteur from ecolight.Capteur where id_piece = '2'";
+    $sql = "select * from ecolight.Capteur where id_piece = :id";
     $result = true;
     try {
         $dbh = initDb();
         $req = $dbh->prepare($sql);
-        $result = $req->execute($data);
-        //$id = $db->lastInsertId();
+        $req->bindParam('id', $id);
+        $req->execute();
+        $result = $req->fetchAll(PDO::FETCH_OBJ);
         $req = null;
     } catch (PDOException $e) {
-        $_SESSION['error'] = 'Il y une erreur dans getCapteurBypiueceid';
+        $_SESSION['error'] = 'Il y une erreur dans getCaptorsByPieceId';
         $result = false;
     }
     return $result;
 }
 
-function getTempByCapteur() {
-
-    $sql = "select date_value, temperature_temp from ecolight.Date_valeur where id_capt_temp = 2";
+function getValuesByCaptorId($id, $type) {
+    if ($type == 'L') {
+        $sql = "select * from ecolight.Date_valeur as dt inner join  ecolight.Capteur as c on c.id_capt = dt.id_capt_lum where id_capt_lum = :id";
+    } else if ($type == 'T') {
+        $sql = "select * from ecolight.Date_valeur as dt inner join  ecolight.Capteur as c on c.id_capt = dt.id_capt_temp where id_capt_temp = :id";
+    }
     $result = true;
     try {
         $dbh = initDb();
         $req = $dbh->prepare($sql);
-        $result = $req->execute($data);
-        //$id = $db->lastInsertId();
+        $req->bindParam('id', $id);
+        $req->execute();
+        $result = $req->fetchAll(PDO::FETCH_OBJ);
         $req = null;
     } catch (PDOException $e) {
         $_SESSION['error'] = 'Il y une erreur dans gettempdatbycapteur';
-        $result = false;
-    }
-    return $result;
-}
-
-function getLumByCapteur() {
-
-    $sql = "select date_value, luminosite_lum from ecolight.Date_valeur where id_capt_lum = 2;";
-    $result = true;
-    try {
-        $dbh = initDb();
-        $req = $dbh->prepare($sql);
-        $result = $req->execute($data);
-        //$id = $db->lastInsertId();
-        $req = null;
-    } catch (PDOException $e) {
-        $_SESSION['error'] = 'Il y une erreur dans getlumindatabycaptorid';
         $result = false;
     }
     return $result;
